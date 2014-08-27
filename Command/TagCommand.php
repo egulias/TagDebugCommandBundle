@@ -93,8 +93,8 @@ EOF
     protected function addTagsToTable($tags, TableHelper $table)
     {
         foreach ($tags as $services) {
-            $row = array();
             foreach ($services as $id => $tag) {
+                $row = array();
                 $row[] = $id;
                 $row[] = $tag->getName();
                 $row[] = $this->getTagAttributes($tag);
