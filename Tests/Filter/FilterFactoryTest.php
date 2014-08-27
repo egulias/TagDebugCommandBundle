@@ -51,6 +51,6 @@ class FilterFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new FilterFactory();
 
         $factory->register($name, $fqcn);
-        $factory->createFromName($name, ['param']);
+        $factory->createFromName($name, array('param'));
     }
 } 
