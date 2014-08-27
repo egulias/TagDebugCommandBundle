@@ -14,7 +14,7 @@
         <tag name="kernel.event_listener" event="kernel.view" priority="8" method="listen"/>
     </service>
     <service id="dummy_custom_tag" class="Egulias\TagDebugCommandBundle\Tests\DummyService">
-        <tag name="custom.tag_name"/>
+        <tag name="custom.tag_name" foo="attribute"/>
     </service>
       <service id="dummy_alias" alias ="dummy">
           <tag name="another-tag-name"/>

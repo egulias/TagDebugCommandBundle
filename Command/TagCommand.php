@@ -9,14 +9,12 @@
 
 namespace Egulias\TagDebugCommandBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerDebugCommand;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Helper\TableHelper;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Egulias\TagDebug\Tag\TagFetcher;
 use Egulias\TagDebug\Tag\FilterList;
 use Egulias\TagDebug\Tag\Tag;
 
@@ -25,7 +23,7 @@ use Egulias\TagDebug\Tag\Tag;
  *
  * @author Eduardo Gulias <me@egulias.com>
  */
-class TagCommand extends ContainerDebugCommand
+class TagCommand extends ContainerAwareCommand
 {
     /**
      * {@inherit}
@@ -68,19 +66,10 @@ EOF
 
     protected function outputTags(OutputInterface $output, $options = array())
     {
-        $filtersMap = ['name' => 'Egulias\TagDebug\Tag\Filter\Name'];
+        $filters = $this->getFilters($options);
 
-        $filters = new FilterList();
-        foreach ($options['filters'] as $filterName) {
-            $args = explode('=', $filterName);
-            $const = $args[1];
-            $const = explode(',', $const);
-            $filter = new $filtersMap[$args[0]]($const[0]);
+        $fetcher = $this->getContainer()->get('egulias.tag_fetcher');
 
-            $filters->append($filter);
-        }
-
-        $fetcher = new TagFetcher($this->getContainerBuilder());
         $tags = $fetcher->fetch($filters);
 
         $label = '<comment>Public</comment> tagged services';
@@ -121,5 +110,28 @@ EOF
         }
 
         return $attributes;
+    }
+
+    protected function getFilters(array $options)
+    {
+        $filters = new FilterList();
+        $filterFactory = $this->getContainer()->get('egulias.tag_filter_factory');
+        foreach ($options['filters'] as $filterNameAndArgs) {
+            $construction = $this->getNameAndArguments($filterNameAndArgs);
+            $filter = $filterFactory->createFromName($construction['name'], $construction['arguments']);
+            $filters->append($filter);
+        }
+
+        return $filters;
+    }
+
+    protected function getNameAndArguments($filterNameAndArguments)
+    {
+        $args = explode('=', $filterNameAndArguments);
+        $arguments = $args[1];
+        $name = $args[0];
+        $filterArgs = explode(',', $arguments);
+
+        return array('name' => $name, 'arguments' => $filterArgs);
     }
 }

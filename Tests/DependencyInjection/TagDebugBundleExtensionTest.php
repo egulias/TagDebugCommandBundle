@@ -16,47 +16,50 @@ class TagDebugBundleExtensionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->extension = $this->getExtension();
-        $this->root      = "tag_debug";
+        $this->root      = "egulias_tag_debug";
     }
 
-    public function testGetConfigWithDefaultValues()
+    public function testContainerHasFactoryDefinition()
     {
         $container = $this->getContainer();
         $this->extension->load(array(), $container);
 
-        $defaultFilters = array(
-            'Egulias\TagDebug\Tag\Filter\Name' => 1,
-            'Egulias\TagDebug\Tag\Filter\AttributeName' => 1,
-            'Egulias\TagDebug\Tag\Filter\AttributeValue' => 2,
-            'Egulias\TagDebug\Tag\Filter\NameRegEx' => 2,
-        );
-
-        $this->assertTrue($container->hasParameter($this->root . ".filters"));
-        $this->assertEquals($defaultFilters, $container->getParameter($this->root . ".filters"));
+        $this->assertTrue($container->hasDefinition("egulias.tag_filter_factory"));
     }
 
-    public function testContainerHasUserFilters()
+    public function testFactoryDefinitionHasMethodCalls()
     {
-        $userFilters = array(
-            array(
-                'class' => 'Egulias\Tests\Tag\Filter\Name',
-                'params' => 1
-            )
-        );
-        $expectedFilters = array(
-            'Egulias\TagDebug\Tag\Filter\Name' => 1,
-            'Egulias\TagDebug\Tag\Filter\AttributeName' => 1,
-            'Egulias\TagDebug\Tag\Filter\AttributeValue' => 2,
-            'Egulias\TagDebug\Tag\Filter\NameRegEx' => 2,
-            'Egulias\Tests\Tag\Filter\Name' => 1,
-        );
-
         $container = $this->getContainer();
-        $this->extension->load(array(array('filters' => $userFilters)), $container);
+        $this->extension->load(array(), $container);
 
+        $factoryDefinition = $container->getDefinition("egulias.tag_filter_factory");
+        $defaultFilters = 4;
 
-        $this->assertTrue($container->hasParameter($this->root . ".filters"));
-        $this->assertEquals($expectedFilters, $container->getParameter($this->root . ".filters"));
+        $calls = $factoryDefinition->getMethodCalls();
+
+        $this->assertCount($defaultFilters, $calls);
+        $this->assertEquals('name', $calls[0][1][0]);
+        $this->assertEquals('attribute_name', $calls[1][1][0]);
+        $this->assertEquals('attribute_value', $calls[2][1][0]);
+        $this->assertEquals('name_regex', $calls[3][1][0]);
+    }
+
+    public function testRegisterUserFilters()
+    {
+        $container = $this->getContainer();
+        $userFilters = array(
+            'class' => 'Egulias\TagDebugCommandBundle\Tests\Dummy',
+            'name' => 'dummy'
+        );
+        $this->extension->load(array(array('filters' => array($userFilters))), $container);
+
+        $factoryDefinition = $container->getDefinition("egulias.tag_filter_factory");
+        $filters = 5;
+
+        $calls = $factoryDefinition->getMethodCalls();
+
+        $this->assertCount($filters, $calls);
+        $this->assertEquals('dummy', $calls[4][1][0]);
     }
 
     /**

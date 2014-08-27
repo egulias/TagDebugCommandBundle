@@ -23,20 +23,44 @@ class ConfigurationTest extends AbstractConfigurationTestCase
         );
     }
 
-
     public function testConfigureCustomFilter()
     {
         $filters = array(
-            'class' => 'Egulias\TagDebugCommandBundle\Tests\Filter\Dummy',
-            'params' => 1
+            'class' => 'Egulias\TagDebugCommandBundle\Tests\Dummy',
+            'name' => 'dummy'
         );
 
         $expectedFilters = array(
-            'Egulias\TagDebugCommandBundle\Tests\Filter\Dummy' => array('params' => 1)
+            'Egulias\TagDebugCommandBundle\Tests\Dummy' => array('name' => 'dummy')
         );
 
         $this->assertProcessedConfigurationEquals(array(
                array('filters' => array($filters))
+            ),
+            array('filters' => $expectedFilters)
+        );
+    }
+
+    public function testConfigureMultipleFilters()
+    {
+        $filters = array(
+            array(
+                'class' => 'Egulias\TagDebugCommandBundle\Tests\Dummy',
+                'name' => 'dummy'
+            ),
+            array(
+                'class' => 'Egulias\TagDebugCommandBundle\Tests\Dummy2',
+                'name' => 'dummy2'
+            )
+        );
+
+        $expectedFilters = array(
+            'Egulias\TagDebugCommandBundle\Tests\Dummy' => array('name' => 'dummy'),
+            'Egulias\TagDebugCommandBundle\Tests\Dummy2' => array('name' => 'dummy2')
+        );
+
+        $this->assertProcessedConfigurationEquals(array(
+                array('filters' => $filters)
             ),
             array('filters' => $expectedFilters)
         );

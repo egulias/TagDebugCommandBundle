@@ -19,7 +19,7 @@ class Configuration implements ConfigurationInterface
                 ->useAttributeAsKey('class')
                 ->prototype('array')
                     ->children()
-                        ->integerNode('params')->end()
+                        ->scalarNode('name')->end()
                     ->end()
                 ->end()
             ->end()
