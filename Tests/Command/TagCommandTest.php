@@ -65,6 +65,7 @@ class TagCommandTest extends PHPUnit_Framework_TestCase
         $display = $this->executeCommand(array('--filter' => array('name=custom.tag_name')));
 
         $this->assertNotRegExp('/kernel/', $display);
+        $this->assertRegExp('/custom\.tag_name/', $display);
     }
 
     public function testUseTwoFilters()
@@ -75,6 +76,7 @@ class TagCommandTest extends PHPUnit_Framework_TestCase
         $display = $this->executeCommand($options);
 
         $this->assertNotRegExp('/kernel/', $display);
+        $this->assertRegExp('/custom\.tag_name/', $display);
     }
 
     private function executeCommand(array $options)

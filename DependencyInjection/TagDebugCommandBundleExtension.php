@@ -25,25 +25,6 @@ class TagDebugCommandBundleExtension extends Extension
         }
 
         $container->setDefinition('egulias.tag_filter_factory', $factoryDefinition);
-
-        $fetcherDefinition = new Definition('Egulias\TagDebug\Tag\TagFetcher', array($container));
-        $container->setDefinition('egulias.tag_fetcher', $fetcherDefinition);
-    }
-
-    private function getUserFilters(array $config)
-    {
-        $filters = array();
-
-        if (!isset($config['filters'])) {
-            return $filters;
-        }
-
-        foreach ($config['filters'] as $class => $filter) {
-            $this->validateConfig($filter);
-            $filters[$class] = $filter['name'];
-        }
-
-        return $filters;
     }
 
     private function validateConfig(array $filter)
@@ -69,5 +50,17 @@ class TagDebugCommandBundleExtension extends Extension
             'Egulias\TagDebug\Tag\Filter\AttributeValue' => 'attribute_value',
             'Egulias\TagDebug\Tag\Filter\NameRegEx' => 'name_regex',
         );
+    }
+
+    private function getUserFilters(array $config)
+    {
+        $filters = array();
+
+        foreach ($config['filters'] as $class => $filter) {
+            $this->validateConfig($filter);
+            $filters[$class] = $filter['name'];
+        }
+
+        return $filters;
     }
 }

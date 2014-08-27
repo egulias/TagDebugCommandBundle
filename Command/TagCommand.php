@@ -9,7 +9,9 @@
 
 namespace Egulias\TagDebugCommandBundle\Command;
 
+use Egulias\TagDebug\Tag\TagFetcher;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Bundle\FrameworkBundle\Command\ContainerDebugCommand;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -23,7 +25,7 @@ use Egulias\TagDebug\Tag\Tag;
  *
  * @author Eduardo Gulias <me@egulias.com>
  */
-class TagCommand extends ContainerAwareCommand
+class TagCommand extends ContainerDebugCommand
 {
     /**
      * {@inherit}
@@ -68,7 +70,7 @@ EOF
     {
         $filters = $this->getFilters($options);
 
-        $fetcher = $this->getContainer()->get('egulias.tag_fetcher');
+        $fetcher = new TagFetcher($this->getContainerBuilder());
 
         $tags = $fetcher->fetch($filters);
 
