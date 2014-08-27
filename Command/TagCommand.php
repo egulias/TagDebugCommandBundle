@@ -94,10 +94,10 @@ EOF
     {
         foreach ($tags as $services) {
             $row = array();
-            foreach ($services as $id => $serviceInformation) {
+            foreach ($services as $id => $tag) {
                 $row[] = $id;
-                $row[] = $serviceInformation['tag']->getName();
-                $row[] = $this->getTagAttributes($serviceInformation['tag']);
+                $row[] = $tag->getName();
+                $row[] = $this->getTagAttributes($tag);
                 $table->addRow($row);
             }
         }

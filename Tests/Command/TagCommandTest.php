@@ -9,7 +9,7 @@
 
 namespace Egulias\TagDebugCommandBundle\Tests\Command;
 
-use Egulias\TagDebugCommandBundle\DependencyInjection\TagDebugCommandExtension;
+use Egulias\TagDebugCommandBundle\DependencyInjection\EguliasTagDebugCommandExtension;
 use PHPUnit_Framework_TestCase;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -34,7 +34,7 @@ class TagCommandTest extends PHPUnit_Framework_TestCase
             'debug.container.dump' => __DIR__ . '/../appDevDebugProjectContainer.xml')
         );
         $container = new ContainerBuilder($params);
-        $extension = new TagDebugCommandExtension();
+        $extension = new EguliasTagDebugCommandExtension();
         $extension->load(array(), $container);
         $kernel = $this->getMockForAbstractClass('Symfony\Component\HttpKernel\KernelInterface');
         $kernel->expects($this->any())->method('isDebug')->will($this->returnValue(true));
