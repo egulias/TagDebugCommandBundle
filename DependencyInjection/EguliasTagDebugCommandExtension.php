@@ -27,6 +27,11 @@ class EguliasTagDebugCommandExtension extends Extension
         $container->setDefinition('egulias.tag_filter_factory', $factoryDefinition);
     }
 
+    public function getAlias()
+    {
+        return 'egulias_tag_debug_command';
+    }
+
     private function validateConfig(array $filter)
     {
         if(!isset($filter['name'])) {

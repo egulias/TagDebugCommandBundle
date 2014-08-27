@@ -12,7 +12,7 @@ class Configuration implements ConfigurationInterface
     {
         $tb = new TreeBuilder();
         $tb
-            ->root('egulias_tag_debug')
+            ->root('egulias_tag_debug_command')
             ->children()
                 ->arrayNode('filters')
                 ->defaultValue(array())
