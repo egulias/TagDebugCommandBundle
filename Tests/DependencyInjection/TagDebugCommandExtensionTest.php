@@ -5,9 +5,9 @@ namespace Egulias\TagDebugCommandBundle\Test\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
-use Egulias\TagDebugCommandBundle\DependencyInjection\TagDebugCommandBundleExtension;
+use Egulias\TagDebugCommandBundle\DependencyInjection\TagDebugCommandExtension;
 
-class TagDebugBundleExtensionTest extends \PHPUnit_Framework_TestCase
+class TagDebugCommandExtensionTest extends \PHPUnit_Framework_TestCase
 {
     private $extension;
 
@@ -83,7 +83,7 @@ class TagDebugBundleExtensionTest extends \PHPUnit_Framework_TestCase
 
     private function getExtension()
     {
-        return new TagDebugCommandBundleExtension();
+        return new TagDebugCommandExtension();
     }
 
     private function getContainer()

@@ -14,7 +14,7 @@ class FilterFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = new FilterFactory();
 
         $this->assertNull($factory->register($name, $fqcn));
-        $this->assertInstanceOf($fqcn, $factory->createFromName($name, ['param']));
+        $this->assertInstanceOf($fqcn, $factory->createFromName($name, array('param')));
     }
 
     /**

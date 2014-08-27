@@ -33,7 +33,7 @@ Add to your composer.json
 
 Use composer to download the new requirement
 ``` 
-$ php composer.phar update egulias/listeners-debug-command-bundle
+$ php composer.phar update egulias/tag-debug-command-bundle
 ```
 
 ## Add TagDebugCommandBundle to your application kernel

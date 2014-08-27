@@ -10,7 +10,6 @@
 namespace Egulias\TagDebugCommandBundle\Command;
 
 use Egulias\TagDebug\Tag\TagFetcher;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerDebugCommand;
 use Symfony\Component\Console\Helper\TableHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -83,7 +82,7 @@ EOF
         $output->writeln($this->getHelper('formatter')->formatSection('container', $label));
 
         $table = $this->getHelperSet()->get('table');
-        $table->setHeaders(array('Service', 'Tag', 'Attributes'));
+        $table->setHeaders(array('Service', 'Tag', 'Attributes (name => value)'));
         $table->setCellRowFormat('<fg=white>%s</fg=white>');
 
         $this->addTagsToTable($tags, $table);
@@ -95,10 +94,10 @@ EOF
     {
         foreach ($tags as $services) {
             $row = array();
-            foreach ($services as $id => $tag) {
+            foreach ($services as $id => $serviceInformation) {
                 $row[] = $id;
-                $row[] = $tag->getName();
-                $row[] = $this->getTagAttributes($tag);
+                $row[] = $serviceInformation['tag']->getName();
+                $row[] = $this->getTagAttributes($serviceInformation['tag']);
                 $table->addRow($row);
             }
         }

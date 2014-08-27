@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 
-class TagDebugCommandBundleExtension extends Extension
+class TagDebugCommandExtension extends Extension
 {
     /**
      * {@inheritDoc}
